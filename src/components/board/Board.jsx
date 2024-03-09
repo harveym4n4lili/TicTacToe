@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Board.scss';
 import '../square/Square.scss';
 import Square from '../square/Square.jsx'
@@ -6,8 +6,14 @@ import ScoreBoard from '../scoreboard/ScoreBoard.jsx';
 
 const Board = ({ value }) => {
     const [squares, setSquares] = React.useState(Array(9).fill(null));
-    const [isX, setIsX] = React.useState(true);
-    const [winner, setWinner] = React.useState(null);
+
+    const [isX, setIsX] = useState(true);
+    const [winner, setWinner] = useState(null);
+    const [gameOver, setGameOver] = useState(false);
+
+    const [playerScore, setPlayerScore] = useState(0);
+    const [aiScore, setAiScore] = useState(0);
+    const [tieScore, setTieScore] = useState(0);
     
     const  handleClick = (i) => {
         if (isX) {
@@ -18,8 +24,21 @@ const Board = ({ value }) => {
         setSquares(squares);
         setIsX(!isX);
 
-        setWinner(checkWin());
+        const result = checkWin();
+        incrementScore(result);
+        setWinner(result);
+        finishGame(result);
     }
+
+    const incrementScore = (x) => {
+        if (x === "X") {
+            setPlayerScore( playerScore + 1 );
+        } else if (x === "O") {
+            setAiScore( aiScore + 1 );
+        } else if (x === "Tie") {
+            setTieScore( tieScore + 1 );
+        } else return;
+    };
 
     const checkWin = () => {
         const winRules = [
@@ -43,6 +62,17 @@ const Board = ({ value }) => {
         return "Tie";
     }
 
+    const finishGame = (x) =>  {
+        if (x != null) {
+            setTimeout(() => {
+                setSquares(Array(9).fill(null));
+                setIsX(true);
+                setWinner(null);
+
+            }, 1000);
+        }
+    };
+
     return (
         <div className='game'>
             <div className='board'>
@@ -62,7 +92,7 @@ const Board = ({ value }) => {
                     <Square value={squares[8]} onClick={() => handleClick(8)} position="bottom-right" turn={squares[8]}/>
                 </div>
             </div>
-            <ScoreBoard/>
+            <ScoreBoard playerScore={playerScore} aiScore={aiScore} tieScore={tieScore}/>
         </div>
     )
 };
