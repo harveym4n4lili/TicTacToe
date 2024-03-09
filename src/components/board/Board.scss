@@ -14,13 +14,13 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -70%);
+    transform: translate(-50%, -65%);
     /* Center Game Board*/
 }
 
 .board {
-    width:  350px;
-    height: 350px;
+    width:  400px;
+    height: 400px;
 
     background-color: $primary-color;
     box-shadow: inset 10px 5px $shine-color, 10px 5px $shadow-color;

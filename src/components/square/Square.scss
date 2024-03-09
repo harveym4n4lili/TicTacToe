@@ -28,7 +28,7 @@
 
     box-shadow: inset 5px 5px $indent-color;
     
-    transition: font-size 0.2s ease; /* Adjust transition duration */
+    transition: font-size 0.13s ease; /* Adjust transition duration */
 }
 .square p {
     position: absolute;
@@ -37,7 +37,7 @@
 }
 
 .square.clicked {
-    font-size: 64px;
+    font-size: 80px;
     cursor: default;
   
 }

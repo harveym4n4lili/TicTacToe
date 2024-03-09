@@ -2,10 +2,12 @@ import React from 'react';
 import './Board.scss';
 import '../square/Square.scss';
 import Square from '../square/Square.jsx'
+import ScoreBoard from '../scoreboard/ScoreBoard.jsx';
 
 const Board = ({ value }) => {
     const [squares, setSquares] = React.useState(Array(9).fill(null));
     const [isX, setIsX] = React.useState(true);
+    const [winner, setWinner] = React.useState(null);
     
     const  handleClick = (i) => {
         if (isX) {
@@ -15,10 +17,30 @@ const Board = ({ value }) => {
         }
         setSquares(squares);
         setIsX(!isX);
+
+        setWinner(checkWin());
     }
 
     const checkWin = () => {
-    
+        const winRules = [
+            [0,1,2],[3,4,5],[6,7,8], // 3 In Row
+            [0,3,6],[1,4,7],[2,5,8], // 3 In Col
+            [0,4,8],[2,4,6]//3 in diag
+        ]
+        for (const rule of winRules) {
+            const [a, b, c] = rule;
+            if (squares[a] && 
+                squares[a] === squares[b] && 
+                squares[a] === squares[c]) {
+                return squares[a];
+            }
+        }
+        for (const square of squares) {
+            if (square === null) {
+                return null;
+            }
+        }
+        return "Tie";
     }
 
     return (
@@ -40,8 +62,9 @@ const Board = ({ value }) => {
                     <Square value={squares[8]} onClick={() => handleClick(8)} position="bottom-right" turn={squares[8]}/>
                 </div>
             </div>
+            <ScoreBoard/>
         </div>
-    );
+    )
 };
 
 export default Board;
