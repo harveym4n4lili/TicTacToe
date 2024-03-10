@@ -12,7 +12,9 @@
     &[player-turn="O"] {
         color: $playerYcolor;
     }
-  
+
+    font-size: 80px;
+
     margin: 5px;
 
     background-color: $tertiary-color;
@@ -28,7 +30,7 @@
 
     box-shadow: inset 5px 5px $indent-color;
     
-    transition: font-size 0.13s ease; /* Adjust transition duration */
+     /* Adjust transition duration */
 }
 .square p {
     position: absolute;
@@ -36,8 +38,56 @@
     text-shadow: inset 2px 2px 2px rgba(0, 0, 0, 0.5); // Inset shadow for the text
 }
 
+
 .square.clicked {
-    font-size: 80px;
     cursor: default;
-  
+    animation: fontAnimation 0.13s ease;
+    font-size: 80px;
 }
+.square.disable {
+    cursor: default;
+}
+.square.reset,.square.reset.highlight {
+    animation: fontToZero 1s ease;
+    font-size: 0px;
+}
+.square.highlight  {
+    animation: highlightAnimation 0.13s ease;
+    font-size: 100px;
+    color: #dfbfec;
+    background-color: #1f1f1f;
+}
+
+
+
+@keyframes fontAnimation {
+    from {
+        font-size: 0px;
+    }
+    to {
+        font-size: 80px;
+    }
+}
+@keyframes fontToZero {
+    from {
+        font-size: 100px;
+
+    }
+    to {
+        font-size: 0px;
+        background-color: #292929;
+    }
+}
+@keyframes highlightAnimation {
+    from {
+        font-size: 80px;
+    }
+    to {
+        font-size: 100px;
+        background-color: #1f1f1f;
+        color: #dfbfec;
+   
+    }
+}
+
+

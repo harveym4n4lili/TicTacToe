@@ -6,9 +6,9 @@ import ScoreBoard from '../scoreboard/ScoreBoard.jsx';
 
 const Board = ({ value }) => {
     const [squares, setSquares] = React.useState(Array(9).fill(null));
+    const [winningSquares, setWinningSquares] = React.useState(Array(9).fill(false));
 
     const [isX, setIsX] = useState(true);
-    const [winner, setWinner] = useState(null);
     const [gameOver, setGameOver] = useState(false);
 
     const [playerScore, setPlayerScore] = useState(0);
@@ -16,6 +16,8 @@ const Board = ({ value }) => {
     const [tieScore, setTieScore] = useState(0);
     
     const  handleClick = (i) => {
+        if (gameOver) return;
+
         if (isX) {
             squares[i] = 'X';
         } else {
@@ -26,7 +28,6 @@ const Board = ({ value }) => {
 
         const result = checkWin();
         incrementScore(result);
-        setWinner(result);
         finishGame(result);
     }
 
@@ -51,6 +52,11 @@ const Board = ({ value }) => {
             if (squares[a] && 
                 squares[a] === squares[b] && 
                 squares[a] === squares[c]) {
+
+                winningSquares[a] = true;
+                winningSquares[b] = true;
+                winningSquares[c] = true;
+
                 return squares[a];
             }
         }
@@ -59,17 +65,19 @@ const Board = ({ value }) => {
                 return null;
             }
         }
+        setWinningSquares(Array(9).fill(true));
         return "Tie";
     }
 
     const finishGame = (x) =>  {
         if (x != null) {
+            setGameOver(true);
             setTimeout(() => {
                 setSquares(Array(9).fill(null));
+                setWinningSquares(Array(9).fill(false));
                 setIsX(true);
-                setWinner(null);
-
-            }, 1000);
+                setGameOver(false);
+            }, 3000);
         }
     };
 
@@ -77,19 +85,19 @@ const Board = ({ value }) => {
         <div className='game'>
             <div className='board'>
                 <div className='board-row'>
-                    <Square value={squares[0]} onClick={() => handleClick(0)} position="top-left" turn={squares[0]}/>
-                    <Square value={squares[1]} onClick={() => handleClick(1)} position="top-center" turn={squares[1]}/>
-                    <Square value={squares[2]} onClick={() => handleClick(2)} position="top-right" turn={squares[2]}/>
+                    <Square value={squares[0]} winningSquare={winningSquares[0]} onClick={() => handleClick(0)} position="top-left" turn={squares[0]} gameOver={gameOver}/>
+                    <Square value={squares[1]} winningSquare={winningSquares[1]} onClick={() => handleClick(1)} position="top-center" turn={squares[1]} gameOver={gameOver}/>
+                    <Square value={squares[2]} winningSquare={winningSquares[2]} onClick={() => handleClick(2)} position="top-right" turn={squares[2]} gameOver={gameOver}/>
                 </div>
                 <div className='board-row'>
-                    <Square value={squares[3]} onClick={() => handleClick(3)} position="middle-left" turn={squares[3]}/>
-                    <Square value={squares[4]} onClick={() => handleClick(4)} position="middle-center" turn={squares[4]}/>
-                    <Square value={squares[5]} onClick={() => handleClick(5)} position="middle-right" turn={squares[5]}/>
+                    <Square value={squares[3]} winningSquare={winningSquares[3]} onClick={() => handleClick(3)} position="middle-left" turn={squares[3]} gameOver={gameOver}/>
+                    <Square value={squares[4]} winningSquare={winningSquares[4]} onClick={() => handleClick(4)} position="middle-center" turn={squares[4]} gameOver={gameOver}/>
+                    <Square value={squares[5]} winningSquare={winningSquares[5]} onClick={() => handleClick(5)} position="middle-right" turn={squares[5]} gameOver={gameOver}/>
                 </div>
                 <div className='board-row'>
-                    <Square value={squares[6]} onClick={() => handleClick(6)} position="bottom-left" turn={squares[6]}/>
-                    <Square value={squares[7]} onClick={() => handleClick(7)} position="bottom-center" turn={squares[7]}/>
-                    <Square value={squares[8]} onClick={() => handleClick(8)} position="bottom-right" turn={squares[8]}/>
+                    <Square value={squares[6]} winningSquare={winningSquares[6]} onClick={() => handleClick(6)} position="bottom-left" turn={squares[6]} gameOver={gameOver}/>
+                    <Square value={squares[7]} winningSquare={winningSquares[7]} onClick={() => handleClick(7)} position="bottom-center" turn={squares[7]} gameOver={gameOver}/>
+                    <Square value={squares[8]} winningSquare={winningSquares[8]} onClick={() => handleClick(8)} position="bottom-right" turn={squares[8]} gameOver={gameOver}/>
                 </div>
             </div>
             <ScoreBoard playerScore={playerScore} aiScore={aiScore} tieScore={tieScore}/>
