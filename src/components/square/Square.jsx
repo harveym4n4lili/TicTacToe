@@ -1,24 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './Square.scss';
 
-const Square = ({ value, onClick, position, turn, gameOver, winningSquare}) => {
+const Square = ({ value, onClick, position, turn, gameOver, winningSquare, resetToggle}) => {
 
     const [clicked, setClicked] = useState(false);
-    const [timerComplete, setTimerComplete] = useState(false);
 
     useEffect(() => {
-        let timer;
         if (gameOver) {
             setClicked(false);
-
-            timer = setTimeout(() => {
-                setTimerComplete(true);
-            }, 2000);
-        } else {
-            setTimerComplete(false);
-        }
-
-        return () => clearTimeout(timer);
+        } 
     },[gameOver]);
 
     useEffect(() => {
@@ -33,9 +23,9 @@ const Square = ({ value, onClick, position, turn, gameOver, winningSquare}) => {
 
     return (
         <div className={`square  
-        ${clicked ? `${position} clicked` : position}  
+        ${clicked ? `clicked` : `notClicked`}  
         ${gameOver === true ? 'disable' : ''}
-        ${timerComplete ? 'reset' : ''}
+        ${resetToggle ? 'reset' : ''}
         ${winningSquare ? 'highlight' : ''}
         `}  
         onClick={handleClick} 
