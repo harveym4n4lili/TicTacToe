@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Board.scss';
 import '../square/Square.scss';
-import getAIMove from '../AI/AI.js'; // Import AI logic
+import getAIMove from '../ai/AI.js'; // Import AI logic
 import Square from '../square/Square.jsx'
 import ScoreBoard from '../scoreboard/ScoreBoard.jsx';
 
