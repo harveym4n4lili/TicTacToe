@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Board.scss';
 import '../square/Square.scss';
+import getAIMove from '../AI/AI.js'; // Import AI logic
 import Square from '../square/Square.jsx'
 import ScoreBoard from '../scoreboard/ScoreBoard.jsx';
 
@@ -17,20 +18,33 @@ const Board = ({ value }) => {
     const [tieScore, setTieScore] = useState(0);
     
     const  handleClick = (i) => {
-        if (gameOver) return;
+        if (gameOver || squares[i] !== null) return;
 
-        if (isX) {
-            squares[i] = 'X';
-        } else {
-            squares[i] = 'O';
-        }
+        squares[i] = isX ? 'X' : 'O';
         setSquares(squares);
         setIsX(!isX);
-
+        console.log(squares);
         const result = checkWin();
         incrementScore(result);
         finishGame(result);
     }
+    useEffect(() => {
+        if (!isX && !gameOver) performAIMove(squares);
+    }, [gameOver, isX, squares])
+
+
+    const performAIMove = (board) => {
+        const aiMove = getAIMove(board);
+        if (board[aiMove] === null) {
+            board[aiMove] = 'O';
+            setSquares(board);
+            setIsX(true);
+            console.log(squares);
+            const aiResult = checkWin();
+            incrementScore(aiResult);
+            finishGame(aiResult);
+        }
+    }; 
 
     const incrementScore = (x) => {
         if (x === "X") {
@@ -86,7 +100,6 @@ const Board = ({ value }) => {
                 setResetToggle(false);
             }, 1000);
         }
-        
         // onclick method for reset overlay 
     }
 

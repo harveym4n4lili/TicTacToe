@@ -23,7 +23,7 @@ const Square = ({ value, onClick, position, turn, gameOver, winningSquare, reset
 
     return (
         <div className={`square  
-        ${clicked ? `clicked` : `notClicked`}  
+        ${clicked || value ? `clicked` : `notClicked`}  
         ${gameOver === true ? 'disable' : ''}
         ${resetToggle ? 'reset' : ''}
         ${winningSquare ? 'highlight' : ''}
